@@ -5,20 +5,22 @@
 %define	gem_name net-ssh-gateway
 Summary:	A simple library to assist in establishing tunneled Net::SSH connections
 Name:		ruby-%{gem_name}
-Version:	1.1.0
+Version:	1.2.0
 Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{gem_name}-%{version}.gem
-# Source0-md5:	896b2b8ccca01edc72e145176a591665
+# Source0-md5:	7398dc8b2480c870eea3ccf1969f4913
 URL:		http://net-ssh.rubyforge.org/gateway
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.656
+%if %{with tests}
 BuildRequires:	ruby-minitest
 BuildRequires:	ruby-mocha
-BuildRequires:	ruby-net-ssh >= 1.99.1
+BuildRequires:	ruby-net-ssh >= 2.6.5
 BuildRequires:	ruby-rubygems
-Requires:	ruby-net-ssh >= 1.99.1
+%endif
+Requires:	ruby-net-ssh >= 2.6.5
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -52,5 +54,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.rdoc CHANGELOG.rdoc
+%doc README.rdoc CHANGES.txt LICENSE.txt
 %{ruby_vendorlibdir}/net/ssh/gateway.rb
