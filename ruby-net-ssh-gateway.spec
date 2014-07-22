@@ -6,7 +6,7 @@
 Summary:	A simple library to assist in establishing tunneled Net::SSH connections
 Name:		ruby-%{gem_name}
 Version:	1.2.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{gem_name}-%{version}.gem
