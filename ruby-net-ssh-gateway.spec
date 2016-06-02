@@ -2,14 +2,14 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
-%define	gem_name net-ssh-gateway
+%define	pkgname net-ssh-gateway
 Summary:	A simple library to assist in establishing tunneled Net::SSH connections
-Name:		ruby-%{gem_name}
+Name:		ruby-%{pkgname}
 Version:	1.2.0
-Release:	2
+Release:	3
 License:	MIT
 Group:		Development/Languages
-Source0:	http://rubygems.org/gems/%{gem_name}-%{version}.gem
+Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
 # Source0-md5:	7398dc8b2480c870eea3ccf1969f4913
 URL:		http://net-ssh.rubyforge.org/gateway
 BuildRequires:	rpm-rubyprov
@@ -20,7 +20,6 @@ BuildRequires:	ruby-mocha
 BuildRequires:	ruby-net-ssh >= 2.6.5
 BuildRequires:	ruby-rubygems
 %endif
-Requires:	ruby-net-ssh >= 2.6.5
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -37,17 +36,20 @@ Requires:	%{name} = %{version}-%{release}
 Documentation for %{name}.
 
 %prep
-%setup -q -n %{gem_name}-%{version}
+%setup -q -n %{pkgname}-%{version}
 
 %build
+%__gem_helper spec
+
 %if %{with tests}
 RUBYOPT="-Ilib -rrubygems" testrb test/*_test.rb
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_specdir}}
 cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,3 +58,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README.rdoc CHANGES.txt LICENSE.txt
 %{ruby_vendorlibdir}/net/ssh/gateway.rb
+%{ruby_specdir}/%{pkgname}-%{version}.gemspec
