@@ -1,24 +1,23 @@
 #
 # Conditional build:
-%bcond_without	tests		# build without tests
+%bcond_with	tests		# build without tests (not in gem)
 
 %define	pkgname net-ssh-gateway
 Summary:	A simple library to assist in establishing tunneled Net::SSH connections
 Name:		ruby-%{pkgname}
-Version:	1.2.0
-Release:	3
+Version:	2.0.0
+Release:	1
 License:	MIT
 Group:		Development/Languages
-Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
-# Source0-md5:	7398dc8b2480c870eea3ccf1969f4913
-URL:		http://net-ssh.rubyforge.org/gateway
+Source0:	https://rubygems.org/downloads/%{pkgname}-%{version}.gem
+# Source0-md5:	1841d939c1c60e468d517da64e495e31
+URL:		https://github.com/net-ssh/net-ssh-gateway
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.656
 %if %{with tests}
 BuildRequires:	ruby-minitest
 BuildRequires:	ruby-mocha
-BuildRequires:	ruby-net-ssh >= 2.6.5
-BuildRequires:	ruby-rubygems
+BuildRequires:	ruby-net-ssh >= 4.0.0
 %endif
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -42,7 +41,7 @@ Documentation for %{name}.
 %__gem_helper spec
 
 %if %{with tests}
-RUBYOPT="-Ilib -rrubygems" testrb test/*_test.rb
+# No tests in gem
 %endif
 
 %install
@@ -56,6 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.rdoc CHANGES.txt LICENSE.txt
+%doc README.md CHANGES.txt LICENSE.txt
 %{ruby_vendorlibdir}/net/ssh/gateway.rb
+%{ruby_vendorlibdir}/net/ssh/gateway
 %{ruby_specdir}/%{pkgname}-%{version}.gemspec
